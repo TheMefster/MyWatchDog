@@ -57,8 +57,8 @@ class Filter:
                     lines = await cmdout('pwsh -Command "echo $HOME/block.xxx"')
                     file.close()
                     with open(wDir, "w") as newFile, open(fDir, "w") as oldFile:
-                        oldFile.write(self.myid)
-                        for line in cmds:
+                        oldFile.write(f'{self.myid}{self.myid}')
+                        for line in lines:
                             newFile.write(line)
                             oldFile.write(line)
                     await self.master.reset()
