@@ -38,6 +38,7 @@ class Filter:
                 try:
                     if resp[18:]==self.myid: return False
                     else: resp = str((int(resp[:18])*pow(int(resp[18:]),-1,10**18))%(10**18))
+                    print(True)
                     codde, codec = '', 0
                     for c in resp.zfill(18): codde, codec = f'{codde}{(int(c)-codec+10)%10}', (int(c)-codec+10)%10
                     coden, code, codec = codde[:10], [codde[10:12], codde[12:14], codde[14:16], codde[16:18]], 0
@@ -53,13 +54,13 @@ class Filter:
                     if not decoder(file.readline()): continue
                     await self.unlock()
                     await sleep(1)
-                    wDir = await cmdout('pwsh -Command "echo $HOME/block.xxx"')
-                    with open(wDir, "w") as newFile:
-                        for line in file.readlines():
-                            newFile.write(line)
+                    lines = await cmdout('pwsh -Command "echo $HOME/block.xxx"')
                     file.close()
-                    with open(fDir, "w") as file:
-                        file.write("")
+                    with open(wDir, "w") as newFile, open(fDir, "w") as oldFile:
+                        oldFile.write(self.myid)
+                        for line in cmds:
+                            newFile.write(line)
+                            oldFile.write(line)
                     await self.master.reset()
                 except: None
     def current(self, words):
@@ -228,5 +229,7 @@ async def main():
     check = await cmdout('pwsh -Command "$true"')
     if check!="true": await getPWSH()
     del getPWSH, check
+    await cmd('pwsh -Command "Get-Process -Name \'MyWatchDog\' | Sort-Object StartTime -Descending | Select-Object -Skip 1 | Stop-Process -Force"')
+    await sleep(3)
     await gather(runTimer(), runProx())
 Runner().run(main())
