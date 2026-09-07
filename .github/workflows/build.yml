@@ -19,10 +19,10 @@ jobs:
           pip install mitmproxy
 
       - name: Build main with PyInstaller
-        run: pyinstaller --onefile --windowed src/MyWatchDog.py
+        run: pyinstaller --onefile --windowed --icon=src/icon/icon.icns src/MyWatchDog.py
 
       - name: Build helper with PyInstaller
-        run: pyinstaller --onefile --windowed src/GetCode.py
+        run: pyinstaller --onefile --windowed --icon=src/icon/icon.icns src/GetCode.py
         
       - name: Upload Artifact
         uses: actions/upload-artifact@v7
@@ -75,10 +75,10 @@ jobs:
           pip install mitmproxy
 
       - name: Build main with PyInstaller
-        run: pyinstaller --onefile --windowed --icon=src/icon/icon.icns src/MyWatchDog.py
+        run: pyinstaller --onefile --windowed src/MyWatchDog.py
 
       - name: Build helper with PyInstaller
-        run: pyinstaller --onefile --windowed --icon=src/icon/icon.icns src/GetCode.py
+        run: pyinstaller --onefile --windowed src/GetCode.py
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v7
