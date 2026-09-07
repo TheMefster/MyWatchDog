@@ -18,9 +18,12 @@ jobs:
           pip install pyinstaller
           pip install mitmproxy
 
-      - name: Build with PyInstaller
-        run: pyinstaller --onefile --windowed proxy.py
+      - name: Build main with PyInstaller
+        run: pyinstaller --onefile --windowed MyWatchDog.py
 
+      - name: Build helper with PyInstaller
+        run: pyinstaller --onefile --windowed GetCode.py
+        
       - name: Upload Artifact
         uses: actions/upload-artifact@v7
         with:
@@ -43,9 +46,12 @@ jobs:
           pip install pyinstaller
           pip install mitmproxy
 
-      - name: Build with PyInstaller
-        run: pyinstaller --onefile --windowed proxy.py
+      - name: Build main with PyInstaller
+        run: pyinstaller --onefile --windowed MyWatchDog.py
 
+      - name: Build helper with PyInstaller
+        run: pyinstaller --onefile --windowed GetCode.py
+        
       - name: Upload Artifact
         uses: actions/upload-artifact@v7
         with:
@@ -68,8 +74,11 @@ jobs:
           pip install pyinstaller
           pip install mitmproxy
 
-      - name: Build with PyInstaller
-        run: pyinstaller --onefile --windowed proxy.py
+      - name: Build main with PyInstaller
+        run: pyinstaller --onefile --windowed MyWatchDog.py
+
+      - name: Build helper with PyInstaller
+        run: pyinstaller --onefile --windowed GetCode.py
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v7
