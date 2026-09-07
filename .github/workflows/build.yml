@@ -21,8 +21,8 @@ jobs:
       - name: Build main with PyInstaller
         run: pyinstaller --onefile --windowed --icon=src/icon/icon.icns src/MyWatchDog.py
 
-      - name: Build helper with PyInstaller
-        run: pyinstaller --onefile --windowed --icon=src/icon/icon.icns src/GetCode.py
+      - name: Build encoder with PyInstaller
+        run: pyinstaller --onefile --console --icon=src/icon/icon.icns src/GetCode.py
         
       - name: Upload Artifact
         uses: actions/upload-artifact@v7
@@ -49,8 +49,8 @@ jobs:
       - name: Build main with PyInstaller
         run: pyinstaller --onefile --windowed --icon=src/icon/icon.ico src/MyWatchDog.py
 
-      - name: Build helper with PyInstaller
-        run: pyinstaller --onefile --windowed --icon=src/icon/icon.ico src/GetCode.py
+      - name: Build encoder with PyInstaller
+        run: pyinstaller --onefile --console --icon=src/icon/icon.ico src/GetCode.py
         
       - name: Upload Artifact
         uses: actions/upload-artifact@v7
@@ -77,8 +77,8 @@ jobs:
       - name: Build main with PyInstaller
         run: pyinstaller --onefile --windowed src/MyWatchDog.py
 
-      - name: Build helper with PyInstaller
-        run: pyinstaller --onefile --windowed src/GetCode.py
+      - name: Build encoder with PyInstaller
+        run: pyinstaller --onefile --console src/GetCode.py
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v7
