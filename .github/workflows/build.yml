@@ -19,7 +19,7 @@ jobs:
           pip install mitmproxy
 
       - name: Build main with PyInstaller
-        run: pyinstaller --onefile --windowed --icon=src/icon/icon.icns src/MyWatchDog.py
+        run: pyinstaller --onedir --windowed --icon=src/icon/icon.icns src/MyWatchDog.py
 
       - name: Build encoder with PyInstaller
         run: pyinstaller --onefile --console --icon=src/icon/icon.icns src/GetCode.py
@@ -47,7 +47,7 @@ jobs:
           pip install mitmproxy
 
       - name: Build main with PyInstaller
-        run: pyinstaller --onefile --windowed --icon=src/icon/icon.ico src/MyWatchDog.py
+        run: pyinstaller --onedir --windowed --icon=src/icon/icon.ico src/MyWatchDog.py
 
       - name: Build encoder with PyInstaller
         run: pyinstaller --onefile --console --icon=src/icon/icon.ico src/GetCode.py
@@ -75,7 +75,7 @@ jobs:
           pip install mitmproxy
 
       - name: Build main with PyInstaller
-        run: pyinstaller --onefile --windowed src/MyWatchDog.py
+        run: pyinstaller --onedir --windowed src/MyWatchDog.py
 
       - name: Build encoder with PyInstaller
         run: pyinstaller --onefile --console src/GetCode.py
