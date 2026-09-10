@@ -38,7 +38,6 @@ class Filter:
                 try:
                     if resp[18:]==self.myid: return False
                     else: resp = str((int(resp[:18])*pow(int(resp[18:]),-1,10**18))%(10**18))
-                    print(True)
                     codde, codec = '', 0
                     for c in resp.zfill(18): codde, codec = f'{codde}{(int(c)-codec+10)%10}', (int(c)-codec+10)%10
                     coden, code, codec = codde[:10], [codde[10:12], codde[12:14], codde[14:16], codde[16:18]], 0
@@ -73,11 +72,17 @@ class Filter:
     async def reset(self):
         await self.lock.unlock()
         self.aList, self.bList, self.dList = [], [], []
-        mlist = ["#porn","# nude","#nude ","#nudity","#sexy","#fuck","#creampie","#erotic","#blowjob","#orgasm","youtube.com/shorts","#web proxy","#virtual private net","#private network","#proxy site","#proxy server","#proxy service","#tor browser","#tor onion","#tor project","#torproject","#onion router", "#suicide``10", "#suicidal``20", "@tor browser"]
+        mlist = ["#porn","# nude","#nude``30","#nudity","#sexy``40","#creampie","#erotic","#blowjob","#orgasm","youtube.com/shorts","#web proxy","#virtual private net",
+                 "#private network","#proxy site","#proxy server","#proxy service","#tor browser","#tor onion","#tor project","#torproject","#onion router","#suicide``10",
+                 "#suicidal``20","#bukkake","#cum shot","#cumming","#sexual rub","#sexual encounter","#jerk off","#jerking off","#sexual arousal","#anal sex``30",
+                 "#virginity``10","#anilingus","#pompoir","#urethral sounding``40","#intercourse``20","#orgy``30","#gangbang","#gang bang``30","#lewd``20","#lascivious",
+                 "@tor browser","#lingerie","#naked woman``30","#naked man``20","#vulnerable``10","#topless``20","#tempting man``20","#tempting woman``20","#tempting body``20",
+                 "#tempting girl``20","#tempting body","#intima``5","#sensual``15","#sexy body","#having sex``20","# arouse``20","#twerk``20","#playboy``40","#bigo live",
+                 "#bigolive","#periscope girl","#periscopegirl","#periscope live","#periscopelive"]
         fDir = await cmdout('pwsh -Command "echo $HOME/block.xxx"')
         try: file = open(fDir)
         except: file = type('File', (), {'readlines': (lambda self: []), 'close': (lambda self: None)})()
-        for line in  mlist+file.readlines(): (self.bList.append(self.process(line.strip()[1:])) if line.strip()[0]=="#" else self.aList.append(line.strip().lower()[1:]) if line.strip()[0]=="@" else self.dList.append(self.process(line.strip()))) if line.strip()!="" else None
+        for line in  mlist+file.readlines(): (self.bList.append(self.process(line.strip().lower()[1:])) if line.strip()[0]=="#" else self.aList.append(line.strip().lower()[1:]) if line.strip()[0]=="@" else self.dList.append(self.process(line.strip().lower()))) if line.strip()!="" else None
         file.close()
         await self.lock.lock()
     async def apply(self):
@@ -204,7 +209,9 @@ async def main():
     async def runTimer():
         async def appMgr():
             alist, resp = Filter().aList, await cmdout('pwsh -Command "gps | where { $_.MainWindowTitle } | select Id, Name, MainWindowTitle | ConvertTo-Json"')
-            for window in (JSONDecoder().decode(resp) if resp else []):
+            try: windows = JSONDecoder().decode(resp) if resp else []
+            except: return
+            for window in windows:
                 if type(window)==dict and (window['name'] in alist or any(a.lower() in window['mainwindowtitle'].lower() for a in alist)): await cmd(f'pwsh -Command "spps -id {window["id"]}"')
         async def configMgr(win):
             if win:
@@ -216,7 +223,9 @@ async def main():
         await sleep(5)
         os = await cmdout('pwsh -Command "5*$IsWindows+3*$IsMacOS+2*$IsLinux"')
         match os:
-            case "5": await cmd('certutil -addstore -f -User Root $HOME/.mitmproxy/mitmproxy-ca-cert.cer')
+            case "5":
+                await cmd('certutil -addstore -f -User Root $HOME/.mitmproxy/mitmproxy-ca-cert.cer')
+                await cmd('pwsh -Command "New-ItemProperty -Path \'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\' -Name \'MyWatchDog\' -Value $PWD\\MyWatchDog.exe -PropertyType String -Force"')
             case "3": await cmd('security add-trusted-cert -d -r trustRoot -k ~/Library/Keychains/login.keychain-db $HOME/.mitmproxy/mitmproxy-ca-cert.cer')
             case "2": None
             case _: return
@@ -230,6 +239,8 @@ async def main():
     if check!="true": await getPWSH()
     del getPWSH, check
     await cmd('pwsh -Command "Get-Process -Name \'MyWatchDog\' | Sort-Object StartTime -Descending | Select-Object -Skip 1 | Stop-Process -Force"')
+    restarter = create_task(cmd('pwsh -Command "while ($true) { if ((Get-Process -Name \'MyWatchDog\' -ErrorAction SilentlyContinue).Count -eq 0) {Start-Process \'MyWatchDog\'} else {Start-Sleep -Seconds 1}"'))
     await sleep(3)
     await gather(runTimer(), runProx())
+    return restarter
 Runner().run(main())
